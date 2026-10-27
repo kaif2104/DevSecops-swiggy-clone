@@ -7,10 +7,10 @@ pipeline {
     }
 
     environment {
-    JAVA_HOME = '/usr/lib/jvm/temurin-17-jdk-amd64'
-    SCANNER_HOME = tool 'sonar-scanner'
-    DOCKER_IMAGE = 'kaif03/swiggy'
-    DOCKER_TAG = 'latest'
+        JAVA_HOME    = '/usr/lib/jvm/temurin-17-jdk-amd64'
+        SCANNER_HOME = tool 'sonar-scanner'
+        DOCKER_IMAGE = 'kaif03/swiggy'
+        DOCKER_TAG   = 'latest'
     }
 
     stages {
@@ -37,18 +37,18 @@ pipeline {
                         sh '''
                             echo "JAVA_HOME=$JAVA_HOME"
                             which java
-                            ls -l "$JAVA_HOME/bin/java"
                             java -version
+                            test -x "$JAVA_HOME/bin/java"
 
                             "$SCANNER_HOME/bin/sonar-scanner" \
-                            -Dsonar.projectKey=Swiggy \
-                            -Dsonar.projectName=Swiggy \
-                            -Dsonar.sources=.
+                              -Dsonar.projectKey=Swiggy \
+                              -Dsonar.projectName=Swiggy \
+                              -Dsonar.sources=.
                         '''
+                    }
+                }
             }
         }
-    }
-}
 
         stage('Quality Gate') {
             steps {
@@ -80,13 +80,11 @@ pipeline {
 
         stage('Docker Build & Push') {
             steps {
-                script {
-                    withDockerRegistry(credentialsId: 'docker-creds') {
-                        sh '''
-                            docker build -t "$DOCKER_IMAGE:$DOCKER_TAG" .
-                            docker push "$DOCKER_IMAGE:$DOCKER_TAG"
-                        '''
-                    }
+                withDockerRegistry(credentialsId: 'docker-creds') {
+                    sh '''
+                        docker build -t "$DOCKER_IMAGE:$DOCKER_TAG" .
+                        docker push "$DOCKER_IMAGE:$DOCKER_TAG"
+                    '''
                 }
             }
         }
