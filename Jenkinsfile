@@ -32,13 +32,13 @@ pipeline {
                     sh '''
                         echo "JAVA_HOME=$JAVA_HOME"
                         echo "PATH=$PATH"
-                        which java
+                        ls -l "$JAVA_HOME/bin/java"
                         java -version
 
                         "$SCANNER_HOME/bin/sonar-scanner" \
-                          -Dsonar.projectKey=Swiggy \
-                          -Dsonar.projectName=Swiggy \
-                          -Dsonar.sources=.
+                        -Dsonar.projectKey=Swiggy \
+                        -Dsonar.projectName=Swiggy \
+                        -Dsonar.sources=.
                     '''
                 }
             }
