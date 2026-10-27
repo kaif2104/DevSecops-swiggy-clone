@@ -7,9 +7,10 @@ pipeline {
     }
 
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
-        DOCKER_IMAGE = 'kaif03/swiggy'
-        DOCKER_TAG   = 'latest'
+    JAVA_HOME = '/usr/lib/jvm/temurin-17-jdk-amd64'
+    SCANNER_HOME = tool 'sonar-scanner'
+    DOCKER_IMAGE = 'kaif03/swiggy'
+    DOCKER_TAG = 'latest'
     }
 
     stages {
@@ -29,20 +30,25 @@ pipeline {
         stage('SonarQube Code Analysis') {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh '''
-                        echo "JAVA_HOME=$JAVA_HOME"
-                        echo "PATH=$PATH"
-                        ls -l "$JAVA_HOME/bin/java"
-                        java -version
+                    withEnv([
+                        'JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64',
+                        'PATH+JAVA=/usr/lib/jvm/temurin-17-jdk-amd64/bin'
+                    ]) {
+                        sh '''
+                            echo "JAVA_HOME=$JAVA_HOME"
+                            which java
+                            ls -l "$JAVA_HOME/bin/java"
+                            java -version
 
-                        "$SCANNER_HOME/bin/sonar-scanner" \
-                        -Dsonar.projectKey=Swiggy \
-                        -Dsonar.projectName=Swiggy \
-                        -Dsonar.sources=.
-                    '''
-                }
+                            "$SCANNER_HOME/bin/sonar-scanner" \
+                            -Dsonar.projectKey=Swiggy \
+                            -Dsonar.projectName=Swiggy \
+                            -Dsonar.sources=.
+                        '''
             }
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
