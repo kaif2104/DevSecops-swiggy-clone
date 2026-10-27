@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 **DevOps Real-time Project: Swiggy Clone App Deployment**
 
 In this **real-time DevOps project**, I demonstrate how to **deploy a Swiggy Clone App** using various modern tools and services in the DevOps ecosystem.
@@ -37,3 +38,7 @@ If you've successfully deployed the **Swiggy Clone App** using this project, I'd
 - 💬 **Share your experience** of deploying the app and the tools you used.
 
 > “DevOps is not just a job; it's a journey to continuously improve processes and automate solutions.” – **Kastro**
+=======
+# DevSecops-swiggy-clone
+Build a production-ready CI/CD and DevSecOps pipeline for a Swiggy Clone using Terraform on AWS, Jenkins automation, SonarQube code quality analysis, Quality Gates, and Trivy filesystem and container image vulnerability scans, enabling secure, automated containerized deployment from code to production.
+>>>>>>> cc7898bff09016f74e0d0a286ba78ff543c7689c
